@@ -1,0 +1,8 @@
+{
+  "name": "emergent-app",
+  "version": "1.0.0",
+  "scripts": {
+    "install": "cd frontend && yarn install && cd ../backend && pip install -r requirements.txt",
+    "build": "cd frontend && yarn build"
+  }
+}
