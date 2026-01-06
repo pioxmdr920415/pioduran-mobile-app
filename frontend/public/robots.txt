@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://8211e6fc-9c0a-4e15-ba62-6a8e16e94bc4.preview.emergentagent.com/sitemap.xml

@@ -42,6 +42,18 @@ const webpackConfig = {
       },
     },
   },
+  jest: {
+    configure: {
+      transformIgnorePatterns: [
+        "node_modules/(?!axios)/"
+      ],
+      moduleNameMapper: {
+        '^axios$': require.resolve('axios'),
+        '^react-router-dom$': '<rootDir>/src/__mocks__/react-router-dom.js',
+      },
+      setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'],
+    },
+  },
   webpack: {
     alias: {
       '@': path.resolve(__dirname, 'src'),

@@ -7,10 +7,23 @@ module.exports = {
   ],
   theme: {
   	extend: {
+  		fontFamily: {
+  			sans: ['Inter', 'system-ui', 'sans-serif'],
+  			display: ['Poppins', 'system-ui', 'sans-serif'],
+  		},
+  		spacing: {
+  			'18': '4.5rem',
+  			'88': '22rem',
+  			'112': '28rem',
+  			'128': '32rem',
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
+  			sm: 'calc(var(--radius) - 4px)',
+  			xl: '1rem',
+  			'2xl': '1.5rem',
+  			'3xl': '2rem',
   		},
   		colors: {
   			background: 'hsl(var(--background))',

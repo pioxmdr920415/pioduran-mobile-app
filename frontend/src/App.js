@@ -1,52 +1,81 @@
-import { useEffect } from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
+import "@/styles/emergency.css";
+import { Suspense, lazy, useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { Toaster } from "./components/ui/toaster";
+import PWAInstallPrompt from "./components/common/PWAInstallPrompt";
+import PWAUpdateNotification from "./components/common/PWAUpdateNotification";
+import NetworkStatusIndicator from "./components/common/NetworkStatusIndicator";
+import OfflineSyncStatus from "./components/offline/OfflineSyncStatus";
+import analyticsService from "./services/analyticsService";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+// Pages
+const Home = lazy(() => import("./pages/Home"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const EmergencyHotline = lazy(() => import("./pages/EmergencyHotline"));
+const ReportIncident = lazy(() => import("./pages/ReportIncident"));
+const GeoTagCamera = lazy(() => import("./pages/GeoTagCamera"));
+const TyphoonDashboard = lazy(() => import("./pages/TyphoonDashboard"));
+const PioDuranMap = lazy(() => import("./pages/PioDuranMap"));
+const DisasterGuidelines = lazy(() => import("./pages/DisasterGuidelines"));
+const SupportResources = lazy(() => import("./pages/SupportResources"));
+const EmergencyPlan = lazy(() => import("./pages/EmergencyPlan"));
+const AIEmergencyAssistant = lazy(() => import("./pages/AIEmergencyAssistant"));
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
+const Settings = lazy(() => import("./pages/Settings"));
+const Help = lazy(() => import("./pages/Help"));
+const AnalyticsDashboard = lazy(() => import("./pages/AnalyticsDashboard"));
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
+// Analytics tracking component
+function AnalyticsTracker() {
+  const location = useLocation();
+  const { user } = useAuth();
 
   useEffect(() => {
-    helloWorldApi();
-  }, []);
+    const pageName = location.pathname.replace('/', '') || 'home';
+    analyticsService.trackPageView(pageName, user?.id);
+  }, [location, user]);
 
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
+  return null;
+}
 
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <AnalyticsTracker />
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/emergency-hotline" element={<EmergencyHotline />} />
+              <Route path="/report-incident" element={<ReportIncident />} />
+              <Route path="/geotag-camera" element={<GeoTagCamera />} />
+              <Route path="/typhoon-dashboard" element={<TyphoonDashboard />} />
+              <Route path="/map" element={<PioDuranMap />} />
+              <Route path="/disaster-guidelines" element={<DisasterGuidelines />} />
+              <Route path="/support-resources" element={<SupportResources />} />
+              <Route path="/emergency-plan" element={<EmergencyPlan />} />
+              <Route path="/ai-emergency-assistant" element={<AIEmergencyAssistant />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/help" element={<Help />} />
+              <Route path="/analytics" element={<AnalyticsDashboard />} />
+            </Routes>
+          </Suspense>
+          <Toaster />
+          <NetworkStatusIndicator />
+          <OfflineSyncStatus />
+          <PWAInstallPrompt />
+          <PWAUpdateNotification />
+        </BrowserRouter>
+      </AuthProvider>
     </div>
   );
 }

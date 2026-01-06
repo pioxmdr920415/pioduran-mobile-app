@@ -29,6 +29,23 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+### `npm run test:e2e`
+
+Runs the end-to-end tests using Playwright. This will start both the backend server and frontend development server automatically, then run the E2E test suite.
+
+The tests cover critical user flows including:
+- User registration
+- User login
+- Incident reporting
+
+### `npm run test:e2e:ui`
+
+Runs the E2E tests with the Playwright UI for debugging and test development.
+
+### `npm run test:e2e:headed`
+
+Runs the E2E tests in headed mode (visible browser) instead of headless.
+
 ### `npm run eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can't go back!**
